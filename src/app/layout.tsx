@@ -23,9 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-basebg">
+      <body className="relative">
         <Providers>
-          <nav>
+          <nav className="sticky top-0 left-0 right-0 bg-basebg">
             <Flex minWidth="max-content" alignItems="center" p="16px">
               <Flex alignItems="center" gap="4px">
                 <svg
