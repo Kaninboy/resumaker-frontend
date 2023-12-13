@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="relative">
+      <body className="relative bg-basebg">
         <Providers>
           <nav className="sticky top-0 left-0 right-0 bg-basebg">
             <Flex minWidth="max-content" alignItems="center" p="16px">
