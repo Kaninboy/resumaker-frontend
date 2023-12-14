@@ -23,10 +23,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="relative bg-basebg">
+      <body className="relative bg-basebg px-4">
         <Providers>
           <nav className="sticky top-0 left-0 right-0 bg-basebg">
-            <Flex minWidth="max-content" alignItems="center" p="16px">
+            <Flex minWidth="max-content" alignItems="center" py="16px">
               <Flex alignItems="center" gap="4px">
                 <svg
                   width="28"
@@ -42,7 +42,9 @@ export default function RootLayout({
                     fill="#4A8CF8"
                   />
                 </svg>
-                <Text fontSize="28px" color="primary.700" as='b'>RESUMAKER</Text>
+                <Text fontSize="28px" color="primary.700" as="b">
+                  RESUMAKER
+                </Text>
                 <Box pb="3px">
                   <Badge variant="outline" colorScheme="primary">
                     BETA
