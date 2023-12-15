@@ -1,17 +1,38 @@
 import { Box, Text } from "@chakra-ui/react";
 
-export default function Preview() {
+type PreviewProps = {
+  name: string;
+  email: string;
+  phone: string;
+  universities: string[];
+};
+
+export default function Preview({
+  name,
+  email,
+  phone,
+  universities,
+}: PreviewProps) {
+  const UniversityList = universities.map((university) => {
+    return <li key={university}>{university}</li>;
+  }, []);
+
   return (
     <Box
       borderWidth="1px"
       borderRadius="lg"
       padding="14px"
       flex="1"
-      w="579px"
-      ml="18px"
+      w="100%"
       bgColor="white"
     >
-      <h1>Preview</h1>
+      <Text fontSize="18px" as="b">
+        Preview
+      </Text>
+      <Text>{name}</Text>
+      <Text>{email}</Text>
+      <Text>{phone}</Text>
+      <ul>{UniversityList}</ul>
       <Text>
         Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum
         definitiones no quo, maluisset concludaturque et eum, altera fabulas ut
