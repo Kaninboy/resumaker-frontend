@@ -1,23 +1,30 @@
 import {
   Box,
-  Button,
-  Collapse,
   Flex,
   FormControl,
   FormLabel,
-  IconButton,
   Input,
-  Stack,
   Text,
 } from "@chakra-ui/react";
 
-export default function ProfileInput() {
+type ProfileInputProps = {
+  name: string;
+  setName: (name: string) => void;
+  email: string;
+  setEmail: (email: string) => void;
+  phone: string;
+  setPhone: (phone: string) => void;
+};
+
+export default function ProfileInput(props: ProfileInputProps) {
+  const { name, setName, email, setEmail, phone, setPhone } = props;
+
   return (
     <Box
       borderWidth="1px"
       borderRadius="lg"
       p="14px"
-      w="615px"
+      w="100%"
       bgColor="white"
       mb="18px"
     >
@@ -43,19 +50,33 @@ export default function ProfileInput() {
         <FormLabel mb="6px" fontSize="14px">
           Name
         </FormLabel>
-        <Input size="sm" />
+        <Input
+          size="sm"
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+        />
       </FormControl>
       <FormControl pb="12px">
         <FormLabel mb="6px" fontSize="14px">
           Email
         </FormLabel>
-        <Input size="sm" type="email" />
+        <Input
+          size="sm"
+          type="email"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+        />
       </FormControl>
       <FormControl pb="12px">
         <FormLabel mb="6px" fontSize="14px">
           Phone
         </FormLabel>
-        <Input size="sm" type="tel" />
+        <Input
+          size="sm"
+          type="tel"
+          onChange={(e) => setPhone(e.target.value)}
+          value={phone}
+        />
       </FormControl>
     </Box>
   );

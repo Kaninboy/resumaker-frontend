@@ -1,17 +1,43 @@
-import { Flex, Text, Spacer, Box } from "@chakra-ui/react";
+"use client";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import ProfileInput from "./components/ProfileInput";
 import Preview from "./components/Preview";
+import { useState } from "react";
+import EducationInput from "./components/EducationInput";
 
 export default function Home() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [universities, setUniversities] = useState<string[]>([]);
+  const addUniversity = (university: string) => {
+    setUniversities([...universities, university]);
+  };
+
   return (
     <main className="bg-basebg">
-      <Flex minWidth="max-content">
+      <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={18}>
         <Box>
-          <ProfileInput />
-          <ProfileInput />
+          <ProfileInput
+            name={name}
+            setName={setName}
+            email={email}
+            setEmail={setEmail}
+            phone={phone}
+            setPhone={setPhone}
+          />
+          <EducationInput
+            addUniversity={addUniversity}
+            universities={universities}
+          />
         </Box>
-        <Preview />
-      </Flex>
+        <Preview
+          name={name}
+          email={email}
+          phone={phone}
+          universities={universities}
+        />
+      </SimpleGrid>
     </main>
   );
 }
