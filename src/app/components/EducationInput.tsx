@@ -32,7 +32,7 @@ export default function EducationInput({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const UniversityList = universities.map((university) => {
     return <li key={university}>{university}</li>;
-  }, []);
+  });
 
   return (
     <Box

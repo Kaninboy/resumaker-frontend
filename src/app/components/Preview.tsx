@@ -15,7 +15,7 @@ export default function Preview({
 }: PreviewProps) {
   const UniversityList = universities.map((university) => {
     return <li key={university}>{university}</li>;
-  }, []);
+  });
 
   return (
     <Box
