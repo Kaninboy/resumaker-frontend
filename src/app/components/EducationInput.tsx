@@ -1,4 +1,8 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Box,
   Button,
   Flex,
@@ -15,6 +19,7 @@ import {
   Spacer,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useState } from "react";
@@ -30,6 +35,7 @@ export default function EducationInput({
 }: EducationInputProps) {
   const [university, setUniversity] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
   const UniversityList = universities.map((university) => {
     return <li key={university}>{university}</li>;
   });
@@ -108,6 +114,22 @@ export default function EducationInput({
                   addUniversity(university);
                   onClose();
                   setUniversity("");
+                  toast({
+                    position: "bottom-right",
+                    render: () => (
+                      <Alert status="success" variant="left-accent">
+                        <AlertIcon />
+                        <Box>
+                          <AlertTitle>
+                            Added &quot;{university}&quot;
+                          </AlertTitle>
+                          <AlertDescription>
+                            Education record added successfully
+                          </AlertDescription>
+                        </Box>
+                      </Alert>
+                    ),
+                  });
                 }}
               >
                 Create
@@ -116,6 +138,7 @@ export default function EducationInput({
           </ModalContent>
         </Modal>
       </Flex>
+      {/* Showing UniversityCard Component soon */}
       <ul>{UniversityList}</ul>
     </Box>
   );
