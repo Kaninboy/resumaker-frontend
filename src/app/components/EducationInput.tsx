@@ -16,6 +16,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
   Spacer,
   Text,
   useDisclosure,
@@ -25,20 +26,41 @@ import {
 import { useState } from "react";
 
 type EducationInputProps = {
-  addUniversity: (university: string) => void;
-  universities: string[];
+  addUniversity: (university: University) => void;
+  universities: University[];
 };
+
+interface University {
+  name: string;
+  level: string;
+  fieldOfStudy: string;
+  gpa: number;
+}
 
 export default function EducationInput({
   addUniversity,
   universities,
 }: EducationInputProps) {
-  const [university, setUniversity] = useState("");
+  const [universityName, setUniversityName] = useState("");
+  const [universityLevel, setUniversityLevel] = useState("Undergraduate");
+  const [universityFieldOfStudy, setUniversityFieldOfStudy] = useState("");
+  const [universityGPA, setUniversityGPA] = useState(0.00);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const UniversityList = universities.map((university) => {
-    return <li key={university}>{university}</li>;
+    return (
+      <li key={university.name}>
+        {university.name} {university.level} {university.fieldOfStudy}{" "}
+        {university.gpa}
+      </li>
+    );
   });
+  const resetUniversity = () => {
+    setUniversityName("");
+    setUniversityLevel("Undergraduate");
+    setUniversityFieldOfStudy("");
+    setUniversityGPA(0.00);
+  };
 
   return (
     <Box
@@ -102,8 +124,46 @@ export default function EducationInput({
                 </FormLabel>
                 <Input
                   size="sm"
-                  onChange={(e) => setUniversity(e.target.value)}
-                  value={university}
+                  placeholder="Chulalongkorn University"
+                  onChange={(e) => setUniversityName(e.target.value)}
+                  value={universityName}
+                />
+              </FormControl>
+              <FormControl pb="12px">
+                <FormLabel mb="6px" fontSize="14px">
+                  Level
+                </FormLabel>
+                <Select
+                  size="sm"
+                  onChange={(e) => setUniversityLevel(e.target.value)}
+                  value={universityLevel}
+                >
+                  <option value="Undergraduate">Undergraduate</option>
+                  <option value="Graduate">Graduate</option>
+                  <option value="Postgraduate">Postgraduate</option>
+                </Select>
+              </FormControl>
+              <FormControl pb="12px">
+                <FormLabel mb="6px" fontSize="14px">
+                  Program / Field of Study
+                </FormLabel>
+                <Input
+                  size="sm"
+                  placeholder="e.g. Computer Engineering"
+                  onChange={(e) => setUniversityFieldOfStudy(e.target.value)}
+                  value={universityFieldOfStudy}
+                />
+              </FormControl>
+              <FormControl pb="12px">
+                <FormLabel mb="6px" fontSize="14px">
+                  GPA
+                </FormLabel>
+                <Input
+                  size="sm"
+                  type="number"
+                  placeholder="e.g. Computer Engineering"
+                  onChange={(e) => setUniversityGPA(Number(e.target.value))}
+                  value={universityGPA}
                 />
               </FormControl>
             </ModalBody>
@@ -111,9 +171,14 @@ export default function EducationInput({
               <Button
                 colorScheme="primary"
                 onClick={() => {
-                  addUniversity(university);
+                  addUniversity({
+                    name: universityName,
+                    level: universityLevel,
+                    fieldOfStudy: universityFieldOfStudy,
+                    gpa: universityGPA,
+                  });
                   onClose();
-                  setUniversity("");
+                  resetUniversity();
                   toast({
                     position: "bottom-right",
                     render: () => (
@@ -121,7 +186,7 @@ export default function EducationInput({
                         <AlertIcon />
                         <Box>
                           <AlertTitle>
-                            Added &quot;{university}&quot;
+                            Added &quot;{universityName}&quot;
                           </AlertTitle>
                           <AlertDescription>
                             Education record added successfully

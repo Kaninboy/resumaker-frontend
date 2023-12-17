@@ -5,12 +5,19 @@ import Preview from "./components/Preview";
 import { useState } from "react";
 import EducationInput from "./components/EducationInput";
 
+interface University {
+  name: string
+  level: string
+  fieldOfStudy: string
+  gpa: number
+} 
+
 export default function Home() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [universities, setUniversities] = useState<string[]>([]);
-  const addUniversity = (university: string) => {
+  const [universities, setUniversities] = useState<University[]>([]);
+  const addUniversity = (university: University) => {
     setUniversities([...universities, university]);
   };
 
@@ -35,7 +42,7 @@ export default function Home() {
           name={name}
           email={email}
           phone={phone}
-          universities={universities}
+          universities={universities.map(university => university.name)}
         />
       </SimpleGrid>
     </main>
