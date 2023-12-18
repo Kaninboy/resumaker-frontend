@@ -6,11 +6,11 @@ import { useState } from "react";
 import EducationInput from "./components/EducationInput";
 
 interface University {
-  name: string
-  level: string
-  fieldOfStudy: string
-  gpa: number
-} 
+  name: string;
+  level: string;
+  fieldOfStudy: string;
+  gpa: number;
+}
 
 export default function Home() {
   const [name, setName] = useState("");
@@ -23,7 +23,7 @@ export default function Home() {
 
   return (
     <main className="bg-basebg">
-      <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={18}>
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={18}>
         <Box>
           <ProfileInput
             name={name}
@@ -42,7 +42,7 @@ export default function Home() {
           name={name}
           email={email}
           phone={phone}
-          universities={universities.map(university => university.name)}
+          universities={universities}
         />
       </SimpleGrid>
     </main>

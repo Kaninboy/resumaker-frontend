@@ -63,6 +63,7 @@ export default function RootLayout({
           {children}
         </Providers>
       </body>
+      <footer className="p-2"></footer>
     </html>
   );
 }

@@ -8,6 +8,7 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  FormErrorMessage,
   Input,
   Modal,
   ModalBody,
@@ -24,6 +25,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useState } from "react";
+import EducationBox from "./EducationBox";
 
 type EducationInputProps = {
   addUniversity: (university: University) => void;
@@ -44,23 +46,16 @@ export default function EducationInput({
   const [universityName, setUniversityName] = useState("");
   const [universityLevel, setUniversityLevel] = useState("Undergraduate");
   const [universityFieldOfStudy, setUniversityFieldOfStudy] = useState("");
-  const [universityGPA, setUniversityGPA] = useState(0.00);
+  const [universityGPA, setUniversityGPA] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const UniversityList = universities.map((university) => {
-    return (
-      <li key={university.name}>
-        {university.name} {university.level} {university.fieldOfStudy}{" "}
-        {university.gpa}
-      </li>
-    );
-  });
   const resetUniversity = () => {
     setUniversityName("");
     setUniversityLevel("Undergraduate");
     setUniversityFieldOfStudy("");
-    setUniversityGPA(0.00);
+    setUniversityGPA(0);
   };
+  const isError = universityGPA < 0 || universityGPA > 4;
 
   return (
     <Box
@@ -112,7 +107,13 @@ export default function EducationInput({
         >
           Add
         </Button>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal
+          isOpen={isOpen}
+          onClose={() => {
+            onClose();
+            resetUniversity();
+          }}
+        >
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Add Education Record</ModalHeader>
@@ -154,17 +155,22 @@ export default function EducationInput({
                   value={universityFieldOfStudy}
                 />
               </FormControl>
-              <FormControl pb="12px">
+              <FormControl pb="12px" isInvalid={isError}>
                 <FormLabel mb="6px" fontSize="14px">
                   GPA
                 </FormLabel>
                 <Input
                   size="sm"
                   type="number"
-                  placeholder="e.g. Computer Engineering"
+                  placeholder="4.00"
                   onChange={(e) => setUniversityGPA(Number(e.target.value))}
                   value={universityGPA}
                 />
+                {isError && (
+                  <FormErrorMessage>
+                    GPA must be between 0.00 - 4.00
+                  </FormErrorMessage>
+                )}
               </FormControl>
             </ModalBody>
             <ModalFooter>
@@ -203,8 +209,7 @@ export default function EducationInput({
           </ModalContent>
         </Modal>
       </Flex>
-      {/* Showing UniversityCard Component soon */}
-      <ul>{UniversityList}</ul>
+      <EducationBox universities={universities} />
     </Box>
   );
 }
