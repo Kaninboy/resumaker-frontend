@@ -26,18 +26,12 @@ import {
 
 import { useState } from "react";
 import EducationBox from "./EducationBox";
+import { University } from "../interfaces/University";
 
 type EducationInputProps = {
   addUniversity: (university: University) => void;
   universities: University[];
 };
-
-interface University {
-  name: string;
-  level: string;
-  fieldOfStudy: string;
-  gpa: number;
-}
 
 export default function EducationInput({
   addUniversity,
@@ -46,16 +40,16 @@ export default function EducationInput({
   const [universityName, setUniversityName] = useState("");
   const [universityLevel, setUniversityLevel] = useState("Undergraduate");
   const [universityFieldOfStudy, setUniversityFieldOfStudy] = useState("");
-  const [universityGPA, setUniversityGPA] = useState(0);
+  const [universityGPA, setUniversityGPA] = useState(NaN);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const resetUniversity = () => {
     setUniversityName("");
     setUniversityLevel("Undergraduate");
     setUniversityFieldOfStudy("");
-    setUniversityGPA(0);
+    setUniversityGPA(NaN);
   };
-  const isError = universityGPA < 0 || universityGPA > 4;
+  const isError = universityGPA < 0 || universityGPA > 4 || isNaN(universityGPA);
 
   return (
     <Box
@@ -163,12 +157,12 @@ export default function EducationInput({
                   size="sm"
                   type="number"
                   placeholder="4.00"
-                  onChange={(e) => setUniversityGPA(Number(e.target.value))}
+                  onChange={(e) => setUniversityGPA(e.target.valueAsNumber)}
                   value={universityGPA}
                 />
                 {isError && (
                   <FormErrorMessage>
-                    GPA must be between 0.00 - 4.00
+                    Please Enter a number between 0.00 - 4.00
                   </FormErrorMessage>
                 )}
               </FormControl>

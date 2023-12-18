@@ -1,18 +1,12 @@
 import { Box, Button, Flex, Spacer, Text } from "@chakra-ui/react";
+import { University } from "../interfaces/University";
 
 type EducationBoxProps = {
   universities: University[];
 };
 
-interface University {
-  name: string;
-  level: string;
-  fieldOfStudy: string;
-  gpa: number;
-}
-
 export default function EducationBox({ universities }: EducationBoxProps) {
-  const UniversityList = universities.map((university) => {
+  const universityList = universities.map((university) => {
     return (
       <Flex
         px="8px"
@@ -53,7 +47,7 @@ export default function EducationBox({ universities }: EducationBoxProps) {
   });
   return (
     <Box display="grid" gap="9px">
-      {UniversityList}
+      {universityList}
     </Box>
   );
 }

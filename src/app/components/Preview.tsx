@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { University } from "../interfaces/University";
 
 type PreviewProps = {
   name: string;
@@ -7,20 +8,13 @@ type PreviewProps = {
   universities: University[];
 };
 
-interface University {
-  name: string;
-  level: string;
-  fieldOfStudy: string;
-  gpa: number;
-}
-
 export default function Preview({
   name,
   email,
   phone,
   universities,
 }: PreviewProps) {
-  const UniversityList = universities.map((university) => {
+  const previewUniversity = universities.map((university) => {
     return (
       <Box key={university.name}>
         <Text fontSize="12px" fontWeight="700">
@@ -94,7 +88,7 @@ export default function Preview({
       <Text fontSize="14px" fontWeight="700" textDecoration="underline">
         Education
       </Text>
-      <ul>{UniversityList}</ul>
+      <ul>{previewUniversity}</ul>
     </Box>
   );
 }

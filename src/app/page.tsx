@@ -4,13 +4,7 @@ import ProfileInput from "./components/ProfileInput";
 import Preview from "./components/Preview";
 import { useState } from "react";
 import EducationInput from "./components/EducationInput";
-
-interface University {
-  name: string;
-  level: string;
-  fieldOfStudy: string;
-  gpa: number;
-}
+import { University } from "./interfaces/University";
 
 export default function Home() {
   const [name, setName] = useState("");
