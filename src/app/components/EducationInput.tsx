@@ -31,11 +31,13 @@ import { University } from "../interfaces/University";
 type EducationInputProps = {
   addUniversity: (university: University) => void;
   universities: University[];
+  setUniversities: (universities: University[]) => void;
 };
 
 export default function EducationInput({
   addUniversity,
   universities,
+  setUniversities,
 }: EducationInputProps) {
   const [universityName, setUniversityName] = useState("");
   const [universityLevel, setUniversityLevel] = useState("Undergraduate");
@@ -203,7 +205,7 @@ export default function EducationInput({
           </ModalContent>
         </Modal>
       </Flex>
-      <EducationBox universities={universities} />
+      <EducationBox universities={universities} setUniversities={setUniversities}/>
     </Box>
   );
 }

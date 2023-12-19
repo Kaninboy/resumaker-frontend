@@ -30,6 +30,7 @@ export default function Home() {
           <EducationInput
             addUniversity={addUniversity}
             universities={universities}
+            setUniversities={setUniversities}
           />
         </Box>
         <Preview
