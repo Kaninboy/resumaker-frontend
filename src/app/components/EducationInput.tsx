@@ -27,6 +27,7 @@ import {
 import { useState } from "react";
 import EducationBox from "./EducationBox";
 import { University } from "../interfaces/University";
+import { createId } from "@paralleldrive/cuid2";
 
 type EducationInputProps = {
   addUniversity: (university: University) => void;
@@ -178,6 +179,7 @@ export default function EducationInput({
                     level: universityLevel,
                     fieldOfStudy: universityFieldOfStudy,
                     gpa: universityGPA,
+                    id: createId(),
                   });
                   onClose();
                   resetUniversity();
