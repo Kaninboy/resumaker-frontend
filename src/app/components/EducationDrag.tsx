@@ -20,7 +20,6 @@ import {
 } from "@chakra-ui/react";
 import { University } from "../interfaces/University";
 import { useRef, useState } from "react";
-import { BaseURL } from "../page";
 
 type EducationDragProps = {
   university: University;
@@ -56,7 +55,7 @@ export default function EducationDrag({
     );
     setUniversities(newUniversities);
     try {
-      const updateDeleteUniversity = await fetch(`${BaseURL}/education`, {
+      const updateDeleteUniversity = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/education`, {
         method: "PUT",
         headers: {
           "X-UserID": "New1234",

@@ -9,7 +9,6 @@ import {
 } from "@hello-pangea/dnd";
 import EducationDrag from "./EducationDrag";
 import { use, useState } from "react";
-import { BaseURL } from "../page";
 
 type EducationBoxProps = {
   universities: University[];
@@ -30,7 +29,7 @@ export default function EducationBox({
     setDragLoading(true);
     setUniversities(items);
     try {
-      const updateDragUniversity = await fetch(`${BaseURL}/education`, {
+      const updateDragUniversity = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/education`, {
         method: "PUT",
         headers: {
           "X-UserID": "New1234",
@@ -57,7 +56,7 @@ export default function EducationBox({
     setEditLoading(true);
     setUniversities(newUniversities);
     try {
-      const updateEditUniversity = await fetch(`${BaseURL}/education`, {
+      const updateEditUniversity = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/education`, {
         method: "PUT",
         headers: {
           "X-UserID": "New1234",

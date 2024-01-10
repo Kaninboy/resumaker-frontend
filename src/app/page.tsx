@@ -6,8 +6,6 @@ import { use, useEffect, useState } from "react";
 import EducationInput from "./components/EducationInput";
 import { University } from "./interfaces/University";
 
-export const BaseURL =
-  "https://krnyf6zr6j.execute-api.ap-southeast-1.amazonaws.com/api";
 
 export default function Home() {
   const [name, setName] = useState("");
@@ -27,7 +25,7 @@ export default function Home() {
     setPostLoading(true);
     setUniversities([...universities, university]);
     try {
-      const postUniversity = await fetch(`${BaseURL}/education`, {
+      const postUniversity = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/education`, {
         method: "PUT",
         headers: {
           "X-UserID": "New1234",
@@ -46,7 +44,7 @@ export default function Home() {
     const fetchUniversities = async () => {
       setGetLoading(true);
       try {
-        const response = await fetch(`${BaseURL}/education`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/education`, {
           method: "GET",
           headers: {
             "X-UserID": "New1234",
