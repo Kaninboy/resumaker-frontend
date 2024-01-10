@@ -16,7 +16,7 @@ export default function Preview({
 }: PreviewProps) {
   const previewUniversity = universities.map((university) => {
     return (
-      <Box key={university.name}>
+      <Box key={university.id}>
         <Text fontSize="12px" fontWeight="700">
           {university.name}
         </Text>

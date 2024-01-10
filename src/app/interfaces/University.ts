@@ -3,4 +3,5 @@ export interface University {
   level: string;
   fieldOfStudy: string;
   gpa: number;
+  id: string;
 }

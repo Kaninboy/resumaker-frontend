@@ -19,25 +19,62 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { University } from "../interfaces/University";
+import { useRef, useState } from "react";
+import { BaseURL } from "../page";
 
 type EducationDragProps = {
   university: University;
   universities: University[];
   setUniversities: (universities: University[]) => void;
+  editUniversity: (university: University) => void;
 };
 
 export default function EducationDrag({
   university,
   universities,
   setUniversities,
+  editUniversity,
 }: EducationDragProps) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const handleDelete = () => {
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState(false);
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
+
+  // add fetching data from api here
+  const handleDelete = async () => {
+    setDeleteLoading(true);
     const newUniversities = universities.filter(
-      (u) => u.name !== university.name
+      (u) => u.id !== university.id
     );
     setUniversities(newUniversities);
+    try {
+      const updateDeleteUniversity = await fetch(`${BaseURL}/education`, {
+        method: "PUT",
+        headers: {
+          "X-UserID": "New1234",
+        },
+        body: JSON.stringify(newUniversities),
+      });
+    } catch (error) {
+      setDeleteError(true);
+    } finally {
+      setDeleteLoading(false);
+    }
   };
+  const inputNameRef = useRef<HTMLInputElement>(null);
+  const inputLevelRef = useRef<HTMLSelectElement>(null);
+  const inputFieldOfStudyRef = useRef<HTMLInputElement>(null);
+  const inputGPARef = useRef<HTMLInputElement>(null);
+  // isError would be handle in the next update
+  // const isError = inputGPARef.current === null || inputGPARef.current?.valueAsNumber < 0 || inputGPARef.current?.valueAsNumber > 4 || isNaN(inputGPARef.current?.valueAsNumber);
 
   return (
     <Flex
@@ -45,7 +82,7 @@ export default function EducationDrag({
       py="12px"
       alignItems="center"
       bgColor="#F6F9FF"
-      key={university.name}
+      key={university.id}
       borderRadius="md"
     >
       <svg
@@ -73,20 +110,110 @@ export default function EducationDrag({
           w="64px"
           variant="outline"
           colorScheme="primary"
-          onClick={onOpen}
+          onClick={onEditOpen}
         >
           Edit
         </Button>
+        <Modal
+          isOpen={isEditOpen}
+          onClose={() => {
+            onEditClose();
+            // resetUniversity();
+          }}
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Edit Education Record</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <FormControl pb="12px">
+                <FormLabel mb="6px" fontSize="14px">
+                  Institution
+                </FormLabel>
+                <Input
+                  size="sm"
+                  placeholder="Chulalongkorn University"
+                  ref={inputNameRef}
+                  defaultValue={university.name}
+                />
+              </FormControl>
+              <FormControl pb="12px">
+                <FormLabel mb="6px" fontSize="14px">
+                  Level
+                </FormLabel>
+                <Select
+                  size="sm"
+                  ref={inputLevelRef}
+                  defaultValue={university.level}
+                >
+                  <option value="Undergraduate">Undergraduate</option>
+                  <option value="Graduate">Graduate</option>
+                  <option value="Postgraduate">Postgraduate</option>
+                </Select>
+              </FormControl>
+              <FormControl pb="12px">
+                <FormLabel mb="6px" fontSize="14px">
+                  Program / Field of Study
+                </FormLabel>
+                <Input
+                  size="sm"
+                  placeholder="e.g. Computer Engineering"
+                  ref={inputFieldOfStudyRef}
+                  defaultValue={university.fieldOfStudy}
+                />
+              </FormControl>
+              <FormControl
+                pb="12px"
+                // isInvalid={isError}
+              >
+                <FormLabel mb="6px" fontSize="14px">
+                  GPA
+                </FormLabel>
+                <Input
+                  size="sm"
+                  type="number"
+                  placeholder="4.00"
+                  ref={inputGPARef}
+                  defaultValue={university.gpa}
+                />
+                {/* isError would be handle in the next update */}
+                {/* {isError && (
+                  <FormErrorMessage>
+                    Please Enter a number between 0.00 - 4.00
+                  </FormErrorMessage>
+                )} */}
+              </FormControl>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                colorScheme="primary"
+                onClick={() => {
+                  editUniversity({
+                    name: inputNameRef.current?.value ?? "",
+                    level: inputLevelRef.current?.value ?? "",
+                    fieldOfStudy: inputFieldOfStudyRef.current?.value ?? "",
+                    gpa: inputGPARef.current?.valueAsNumber ?? 0,
+                    id: university.id,
+                  });
+                  onEditClose();
+                  // resetUniversity();
+                }}
+              >
+                Save
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         <Button
           size="xs"
           w="64px"
           variant="outline"
           colorScheme="red"
-          onClick={onOpen}
+          onClick={onDeleteOpen}
         >
           Delete
         </Button>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Delete &quot;{university.name}&quot;</ModalHeader>
@@ -95,14 +222,14 @@ export default function EducationDrag({
               Are you sure? you can&apos;t undo this action afterwards.
             </ModalBody>
             <ModalFooter>
-              <Button mr="12px" onClick={onClose}>
+              <Button mr="12px" onClick={onDeleteClose}>
                 Cancel
               </Button>
               <Button
                 colorScheme="red"
                 onClick={() => {
                   handleDelete();
-                  onClose();
+                  onDeleteClose();
                 }}
               >
                 Delete

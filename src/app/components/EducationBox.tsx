@@ -8,7 +8,8 @@ import {
   DropResult,
 } from "@hello-pangea/dnd";
 import EducationDrag from "./EducationDrag";
-import { use } from "react";
+import { use, useState } from "react";
+import { BaseURL } from "../page";
 
 type EducationBoxProps = {
   universities: University[];
@@ -19,15 +20,56 @@ export default function EducationBox({
   universities,
   setUniversities,
 }: EducationBoxProps) {
-  function handleOnDragEnd(result: DropResult) {
+  const [dragLoading, setDragLoading] = useState(false);
+  const [dragError, setDragError] = useState(false);
+  const handleOnDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
-
     const items = Array.from(universities);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-
+    setDragLoading(true);
     setUniversities(items);
-  }
+    try {
+      const updateDragUniversity = await fetch(`${BaseURL}/education`, {
+        method: "PUT",
+        headers: {
+          "X-UserID": "New1234",
+        },
+        body: JSON.stringify(items),
+      });
+    } catch (error) {
+      setDragError(true);
+    } finally {
+      setDragLoading(false);
+    }
+  };
+  // EditUniversity function: map university.id to edit the universities then setUniversities
+  const [editLoading, setEditLoading] = useState(false);
+  const [editError, setEditError] = useState(false);
+  const editUniversity = async (university: University) => {
+    const newUniversities = universities.map((u) => {
+      if (u.id === university.id) {
+        return university;
+      } else {
+        return u;
+      }
+    });
+    setEditLoading(true);
+    setUniversities(newUniversities);
+    try {
+      const updateEditUniversity = await fetch(`${BaseURL}/education`, {
+        method: "PUT",
+        headers: {
+          "X-UserID": "New1234",
+        },
+        body: JSON.stringify(newUniversities),
+      });
+    } catch (error) {
+      setEditError(true);
+    } finally {
+      setEditLoading(false);
+    }
+  };
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Droppable droppableId="characters">
@@ -36,8 +78,8 @@ export default function EducationBox({
             {universities.map((university, index) => {
               return (
                 <Draggable
-                  key={university.name}
-                  draggableId={university.name}
+                  key={university.id}
+                  draggableId={university.id}
                   index={index}
                 >
                   {(provided) => (
@@ -48,10 +90,11 @@ export default function EducationBox({
                       className="mb-2"
                     >
                       <EducationDrag
-                        key={university.name}
+                        key={university.id}
                         university={university}
                         universities={universities}
                         setUniversities={setUniversities}
+                        editUniversity={editUniversity}
                       />
                     </li>
                   )}
