@@ -1,4 +1,5 @@
 # RESUMAKER
+![RESUMAKER LOGO](https://i.ibb.co/zb1mk3p/Git-Hub-Logo.png)
 Welcome to RESUMAKER, your go-to destination for creating professional and visually appealing resumes effortlessly. This project is a personal initiative developed using [Next.js](https://nextjs.org/) with [TypeScript](https://www.typescriptlang.org/), aimed at providing users with a seamless experience in crafting their resumes.
 
 ## Demo
